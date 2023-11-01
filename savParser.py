@@ -20,8 +20,11 @@ class savParser:
         df, meta = pyreadstat.read_sav(self.path)
 
 
-    #Produserer to arrays. 1: qind som inneholder alle spørsmålsIDer (Q_Id) + 'record, og 2: nqind som henter ut alle felter forutenom, men ekskluderer spørsmålsIDer (Q_Id)
-
+    """
+    Produserer to arrays 
+    1: qind som inneholder alle spørsmålsIDer (Q_Id) + 'record,
+     og 2: nqind som henter ut alle felter forutenom, men ekskluderer spørsmålsIDer (Q_Id)
+    """
     def parseIND(self):
         
         
@@ -46,14 +49,20 @@ class savParser:
         return nqind,qind
 
 
-    #Lager en oversikt over alle respondentene. Her eklskuderer vi alle spørsmål basert på verdiene i self.nqind. Vi lagrer resultatet som respondents.csv i cwd
-
+    """
+    Lager en oversikt over alle respondentene. 
+    Her eklskuderer vi alle spørsmål basert på verdiene i self.nqind.
+    Vi lagrer resultatet som respondents.csv i cwd
+    """
     def getRespondents(self):
         tempdf = self.df.iloc[:,self.nqind]
         tempdf.to_csv(os.getcwd()+"/respondents.csv",index=False)
 
 
-    #Lager en avpivotert liste med svar på alle spørsmål for hver eneste respondent. Lagres som questions.csv
+    """
+    Lager en avpivotert liste med svar på alle spørsmål for hver eneste respondent. 
+    Lagres som questions.csv
+    """
 
     def getQuestions(self):
         Qdf = self.df.iloc[:,self.qind].melt(id_vars="record", var_name="q_ID")
